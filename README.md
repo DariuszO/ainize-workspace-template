@@ -1,6 +1,6 @@
-## <Your Workspace Name>
+## Your Workspace Name
 
-<A brief description of the workspace>
+A brief description of the workspace
 
 ### Major Package List
 
