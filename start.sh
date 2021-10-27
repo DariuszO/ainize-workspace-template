@@ -1,6 +1,8 @@
 echo "Run TTYD"
 echo "Password: $PASSWORD"
 
+chmod -R 555 /workspace
+
 if [ -z "$PASSWORD" ]
 then
 TTYD_PASS=
