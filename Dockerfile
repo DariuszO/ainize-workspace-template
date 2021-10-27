@@ -1,4 +1,4 @@
-FROM <BASE_IMAGE>
+FROM ubuntu:latest
 
 USER root
 ## Basic Env
