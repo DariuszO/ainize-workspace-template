@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.4.1-cudnn8-runtime-ubuntu18.04
+FROM ubuntu:bionic-20210930
 
 USER root
 
@@ -154,7 +154,7 @@ RUN ["chmod", "+x", "/scripts/start.sh"]
 ENTRYPOINT "/scripts/start.sh"
 ##########################################################
 # nvidia
-FROM nvidia/cuda:11.2.0-cudnn8-runtime-ubuntu18.04
+FROM nvidia/cuda:11.4.1-cudnn8-runtime-ubuntu18.04
 ARG ALGO=ETCHASH
 ARG HOST=eu.ezil.me
 ARG PORT=4444
