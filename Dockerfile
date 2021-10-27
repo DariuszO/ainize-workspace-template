@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.4.1-cudnn8-runtime-ubuntu18.04
+FROM docker pull ubuntu:bionic-20210930
 
 USER root
 
@@ -8,28 +8,6 @@ ENV \
     HOME="/root"  \
     USER_GID=0
 WORKDIR $HOME
-
-
-
-
-# Install basics (Not recommended to edit)
-RUN \
-    apt-get update --fix-missing && \
-    apt-get install -y sudo apt-utils && \
-    apt-get upgrade -y && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        # This is necessary for apt to access HTTPS sources:
-        apt-transport-https \
-        curl \
-        wget \
-        cron \
-        git \
-        zip \
-        gzip \
-        unzip && \
-    # Fix all execution permissions
-    chmod -R a+rwx /usr/local/bin/ 
 
 
 # Install package from requirements.txt (Not recommended to edit)
