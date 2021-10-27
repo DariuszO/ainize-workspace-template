@@ -1,4 +1,4 @@
-FROM docker pull ubuntu:bionic-20210930
+FROM ubuntu:bionic-20210930
 
 USER root
 
